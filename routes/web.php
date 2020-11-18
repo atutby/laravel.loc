@@ -13,9 +13,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+Route::get('/', function () {
+    return view('welcome');
+});
 
 Route::get('/foo', function () {
 	return 'Hello, world!';
@@ -65,6 +65,25 @@ Route::get('/post/{id}/{slug}', function($id, $slug) {
 	return "Post $id | $slug";
 })->where(['id' => '[0-9]+', 'slug' => '[A-Za-z0-9-]+']);*/
 
-Route::get('/post/{id}/{slug}', function($id, $slug) {
+/*Route::get('/post/{id}/{slug}', function($id, $slug) {
 	return "Post $id | $slug";
+});*/
+
+
+// Тема: группировка правил
+Route::prefix('admin')->group(function(){
+
+	Route::get('/posts', function() {
+		return "Posts List";
+	});
+	
+	Route::get('/posts/create', function() {
+		return "Post Create";
+	});
+	
+	Route::get('/post/{id}/edit', function($id) {
+		return "Edit Post $id";
+	});
+
 });
+
