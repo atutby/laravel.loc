@@ -9,10 +9,15 @@
 	
 	<form action="{{ route('contact') }}" method='post'>
 		{{-- csrf_field() --}}
+		{{-- method_field('PUT') --}}
+		@method('PUT')
 		@csrf
 		<input type="text" name="name">
 		<input type="emial" name="email">
 		<button type="submit">Submit</button>
 	</form>
+
+	{{ route('post', ['id' => 3, 'cat' => 'Test-2']) }} <br>
+	{{ route('admin.post', ['id' => 3, 'cat' => 'Test-2']) }}
 </body>
 </html>

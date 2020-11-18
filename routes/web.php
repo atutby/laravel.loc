@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('rootPage');
 
 Route::get('/foo', function () {
 	return 'Hello, world!';
@@ -27,7 +27,7 @@ Route::get( 'home', function() {
 	// return view('home')->with('var', $res);
 	// return view('home', ['var' => $res, 'name' => $name]);
 	return view('home', compact('res', 'name'));
-});
+})->name('home');
 
 Route::get( 'about', function() {
 	return '<h1>About Page</h1>';
@@ -45,7 +45,7 @@ Route::post('send-email', function() {
 });*/
 
 // сделаем доступной страницу в по двум методам
-Route::match(['post', 'get'], '/contact', function() {
+Route::match(['post', 'get', 'put'], '/contact', function() {
 	if(!empty($_POST)){
 		dump($_POST);
 	}
@@ -69,9 +69,13 @@ Route::get('/post/{id}/{slug}', function($id, $slug) {
 	return "Post $id | $slug";
 });*/
 
+Route::get('/post/{id}/{slug?}', function($id, $slug) {
+	return "Post $id | $slug";
+})->name('post');
+
 
 // Тема: группировка правил
-Route::prefix('admin')->group(function(){
+Route::prefix('admin')->name('admin.')->group(function(){
 
 	Route::get('/posts', function() {
 		return "Posts List";
@@ -83,7 +87,18 @@ Route::prefix('admin')->group(function(){
 	
 	Route::get('/post/{id}/edit', function($id) {
 		return "Edit Post $id";
-	});
+	})->name('post');
 
 });
 
+// Тема: Подмена метода передачи данных
+// Form Method Spoofing
+
+
+// Fallback Routes
+// Например 404 ошибка
+
+Route::fallback(function(){
+	// return redirect()->route('home');
+	abort(404, 'Ooops! Page not found...');
+});
